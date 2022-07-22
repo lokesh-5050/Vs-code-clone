@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= tabname%>
+    </title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="main">
+        <div id="homepage">
+            <div class="left">
+                <div class="row">
+
+                    <h4>Upload</h4>
+
+                    <div class="icons">
+                        <i id="add-file" class="ri-file-add-line"></i>
+                        <i id="add-folder" class="ri-folder-add-line"></i>
+                         <a id="refresh"  href="/refresh"><i class="ri-refresh-line"></i></a>
+                    </div>
+
+                </div>
+                <form class="fileform"  action="/newfile">
+                    <input  autocomplete="off" id="input-file" type="text" placeholder="Filename" name="newfile" />
+                </form>
+
+                <form class="folderform"  action="/newfolder">
+                    <input autocomplete="off" id="input-folder" type="text" placeholder="Foldername" name="newfolder" />
+                </form>
+
+
+                <div class="files">
+                    <% folders.forEach(function(folder){ %>
+                    <div class="file">
+                      <a
+                        style="color: rgb(109, 221, 255)"
+                        href="/files/<%= folder.name%>"
+                      >
+                        <h4><i class="ri-folder-3-fill"></i> <%= folder.name%></h4>
+                      </a>
+                      <a href="/unlinkfolder/<%=folder.name%>"
+                        ><i class="ri-delete-bin-7-line"></i
+                      ></a>
+                    </div>
+                    <% }) %> <% files.forEach(function(file){ %>
+                    <div class="file">
+                      <a href="/files/<%= file.name%>">
+                        <% if(file.name.split(".")[1]=="html"){ %>
+                        <h3 style="font-size: 17px">
+                          <img
+                            style="height: 20px"
+                            src="https://img.icons8.com/color/344/html-5--v1.png"
+                            alt=""
+                          />
+                          <%= file.name%>
+                        </h3>
+                        <% }else if(file.name.split(".")[1]=="css" ){ %>
+                        <h3 style="font-size: 17px">
+                          <i style="color: blue" class="ri-css3-line"></i><%=
+                          file.name%>
+                        </h3>
+                        <% }else if(file.name.split(".")[1]=="js" ){ %>
+                        <h3 style="font-size: 17px">
+                          <i style="color: blue" class="ri-css3-line"></i><%=
+                          file.name%>
+                        </h3>
+                        <% }else if(file.name.split(".")[1]=="ejs" ){ %>
+                        <h3 style="font-size: 17px">
+                          <i style="color: blue" class="ri-css3-line"></i><%=
+                          file.name%>
+                        </h3>
+                        <% }else if(file.name.split(".")[1]=="json" ){ %>
+                        <h3 style="font-size: 17px">
+                          <i style="color: blue" class="ri-css3-line"></i><%=
+                          file.name%>
+                        </h3>
+                        <% }else if(file.name.split(".")[1]=="jsx" ){ %>
+                        <h3 style="font-size: 17px">
+                          <i style="color: blue" class="ri-reactjs-fill"></i><%=
+                          file.name%>
+                        </h3>
+                        <% }else if(file.name.split(".")[1]=="java" ){ %>
+                        <h3 style="font-size: 17px">
+                          <i style="color: blue" class="ri-css3-line"></i><%=
+                          file.name%>
+                        </h3>
+                        <% }else{ %>
+                        <h3><i class="ri-file-line"></i> <%= file.name%></h3>
+                        <% } %>
+                      </a>
+                      <a href="/unlinkfile/<%=file.name%>"
+                        ><i class="ri-delete-bin-7-line"></i
+                      ></a>
+                    </div>
+                    <% }) %>
+                  </div>
+
+            </div>
+            <div class="right">
+                <div class="tabs">
+                    <div class="tab">
+                        <h4>
+                            <%= tabname%>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="filecontent">
+                    <!-- <h4>
+                        <%= filecontent%>
+                    </h4> -->
+
+                    <form action="/saveData/<%=tabname%>">
+                        <button id="savebtn" type="submit">
+                            <i style="cursor: pointer;" id="savei" class="ri-save-line"></i>
+                        </button>
+                        <textarea name="saveData" id="dataStorer" ><%=filecontent%></textarea>
+                      
+                        
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+      var inputfile = document.querySelector("#input-file")
+        var inputfolder = document.querySelector("#input-folder")
+        var fileform = document.querySelector(".fileform")
+        var folderform = document.querySelector(".folderform")
+
+
+        document.querySelector("#add-file").addEventListener("click", function () {
+            inputfile.style.opacity = "1";
+            inputfolder.style.opacity = "0";
+            inputfile.focus();
+            
+        });
+
+     
+
+        
+
+        document.querySelector("#add-folder").addEventListener("click", function () {
+            inputfile.style.opacity = "0";
+            inputfolder.style.opacity = "1";
+            inputfolder.focus()
+            // yar ye input tag me click kr rha hu to FOCUS hi hat jaa rha hai 😥 ;
+
+
+        });
+
+
+        folderform.addEventListener("keydown" , (dets)=>{
+            if(dets.key == "Escape"){
+                folderform.style.opacity = "0"
+            }
+        });
+
+
+       fileform.addEventListener("keydown", (dets)=>{
+        if(dets.key == "Escape"){
+            fileform.style.opacity= "0"
+        }
+       })
+
+       //yha opacity natak de rhi hai, chli jaa rhi hai to fir chli hi ja rhi hai 😣;   
+      </script>
+</body>
+
+</html>
